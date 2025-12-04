@@ -9,5 +9,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemem": "^0.1.0",
+    "nodemon": "^3.1.11"
+  }
 }
