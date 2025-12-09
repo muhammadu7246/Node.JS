@@ -1,16 +1,29 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 
-
-function V_Product_id(req,res,next) {
-    const p_id =parseInt(req.params.p_id);    
-    if (isNaN(p_id) || p_id <=0) {
-        return res.status(400).json({ success: false, error: 'Invalid product ID' })
-    }
-    
+// Middleware that checks if product ID param is valid number
+function validateProductId(req, res, next) {
+  const id = parseInt(req.params.id);
+  if (isNaN(id) || id <= 0) {
+    return res.status(400).json({ success: false, error: 'Invalid product ID' });
+  }
+  next();
 }
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+// Route uses route-level middleware validateProductId
+app.get('/product/:id', validateProductId, (req, res, next) => {
+  const productId = parseInt(req.params.id);
+
+  if (productId !== 1) {
+    const err = new Error('Product not found');
+    err.status = 404;
+    return next(err);
+  }
+
+  res.json({ id: productId, name: 'Sample Product' });
+});
+
+// Start server
+app.listen(3000, () => {
+  console.log('Server started at http://localhost:3000');
 });
